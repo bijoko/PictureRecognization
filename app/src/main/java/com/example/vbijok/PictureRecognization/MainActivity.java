@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
             File file = bitmapToFile(bitmap, "random");
-            param.put("img", file, "image/jpg");
+            param.put("file", file, "image/jpg");
         } catch (NullPointerException e) {
             Toast.makeText(MainActivity.this, "Sélectionnez une image ...", Toast.LENGTH_SHORT).show();
             return;

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Declaration des constantes code de retour des requetes intent
     private static final int PHOTO_LIB_REQUEST = 1;
     private static final int CAMERA_PIC_REQUEST = 2;
-   //private String SERVER_URL = "http:/192.168.0.0/uusapp/addimage/";
+    //private String SERVER_URL = "http:/192.168.0.0/uusapp/addimage/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.analysisButton:
-                    search();
+                search();
                 break;
 
         }
@@ -144,11 +144,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("API_response", "POST response:" + response);
                 try {
-                    String search_id = (String) new JSONObject(response.toString()).get("id");
+                    String search_id = (String) new JSONObject(response.toString()).get("location");
                     Log.d("API_response", "POST id de la ressource: " + search_id);
 
                     // GET IMG
-                    HttpUtils.get("img_searches/" + search_id, new RequestParams(), new JsonHttpResponseHandler() {
+                    HttpUtils.get( search_id, new RequestParams(), new JsonHttpResponseHandler() {
                         @Override
                         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                             Toast.makeText(MainActivity.this, "l'API n'est pas accessible ...", Toast.LENGTH_LONG).show();
@@ -237,7 +237,3 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 */
-
-
-
-

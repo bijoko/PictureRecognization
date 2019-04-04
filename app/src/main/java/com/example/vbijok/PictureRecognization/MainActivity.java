@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -158,6 +159,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             Log.d("API_response", "GET response" + response.toString());
                             Intent intent = new Intent(getBaseContext(), ResultsActivity.class);
+                            ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+                            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+                            byte[] byteArray = bStream.toByteArray();
+                            System.out.println(byteArray);
+                            intent.putExtra("image",byteArray);
+                            startActivity(intent);
                             intent.putExtra("response", response.toString());
                             startActivity(intent);
                         }

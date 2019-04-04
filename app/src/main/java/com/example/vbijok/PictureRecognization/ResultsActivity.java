@@ -20,7 +20,7 @@ public class ResultsActivity extends AppCompatActivity {
     ImageView picture2;
     ImageView picture3;
     ImageView picture4;
-
+    ImageView picture5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +31,18 @@ public class ResultsActivity extends AppCompatActivity {
         ArrayList<String> pictureList;
 
 
+
+
         picture1 = (ImageView) findViewById(R.id.imageView);
         picture2 = (ImageView) findViewById(R.id.imageView3);
         picture3 = (ImageView) findViewById(R.id.imageView4);
         picture4 = (ImageView) findViewById(R.id.imageView5);
+        picture5 = (ImageView) findViewById(R.id.imageView6);
+
+        Bitmap bmp;
+        byte[] byteArray = extras.getByteArray("image");
+        bmp = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+        picture5.setImageBitmap(bmp);
 
         try {
             responseJSON = new JSONObject(responseString).getJSONArray("results");

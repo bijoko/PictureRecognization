@@ -25,39 +25,72 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Image sélectionnée :"
+                android:typeface="serif"
+                android:gravity="center" />
+
             <ImageView
                 android:id="@+id/imageView6"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="360dp"
                 android:layout_weight="8" />
+
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Image ayant le plus de ressemblance:"
+            android:typeface="serif"
+            android:gravity="center" />
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="280dp"
                 android:layout_weight="8" />
+
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Image n°2:"
+            android:typeface="serif"
+            android:gravity="center" />
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="fill_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="280dp"
                 android:layout_weight="8" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Image n°3:"
+                android:typeface="serif"
+                android:gravity="center" />
+
+
 
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="280dp"
                 android:layout_weight="8" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Image n°4:"
+                android:typeface="serif"
+                android:gravity="center" />
 
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="280dp"
+                android:layout_marginBottom="40dp"
                 android:layout_weight="8" />
 
         </LinearLayout>

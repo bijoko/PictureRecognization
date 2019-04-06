@@ -1,5 +1,6 @@
 package com.example.vbijok.PictureRecognization;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +23,22 @@ public class ResultsActivity extends AppCompatActivity {
     ImageView picture3;
     ImageView picture4;
     ImageView picture5;
+
+
+    private Toast backtoast;
+
+@Override
+    public void onBackPressed() {
+            if(backtoast!=null&&backtoast.getView().getWindowToken()!=null) {
+
+                //other stuff...
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
+            } else {
+                backtoast = Toast.makeText(this, "Press back to exit", Toast.LENGTH_SHORT);
+                backtoast.show();
+            }
+        }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

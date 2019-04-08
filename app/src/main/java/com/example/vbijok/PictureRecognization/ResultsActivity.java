@@ -26,16 +26,14 @@ public class ResultsActivity extends AppCompatActivity {
 
 
     private Toast backtoast;
-
+// fonction qui permet une sécurité / un check sur l'appui du bouton retour
 @Override
     public void onBackPressed() {
             if(backtoast!=null&&backtoast.getView().getWindowToken()!=null) {
-
-                //other stuff...
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
             } else {
-                backtoast = Toast.makeText(this, "Press back to exit", Toast.LENGTH_SHORT);
+                backtoast = Toast.makeText(this, "Appuyez sur retour pour quitter", Toast.LENGTH_SHORT);
                 backtoast.show();
             }
         }
@@ -44,12 +42,9 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         Bundle extras = getIntent().getExtras();
-        String responseString = extras.getString("response");
-        JSONArray responseJSON;
-        ArrayList<String> pictureList;
-
-
-
+        String responseString = extras.getString("response");// Stock la réponse dans une variable
+        JSONArray responseJSON; //Tableau
+        ArrayList<String> pictureList; //Liste
 
         picture1 = (ImageView) findViewById(R.id.imageView);
         picture2 = (ImageView) findViewById(R.id.imageView3);
@@ -57,11 +52,14 @@ public class ResultsActivity extends AppCompatActivity {
         picture4 = (ImageView) findViewById(R.id.imageView5);
         picture5 = (ImageView) findViewById(R.id.imageView6);
 
+        // récupère l'image prise par l'utilisateur
+
         Bitmap bmp;
         byte[] byteArray = extras.getByteArray("image");
         bmp = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
         picture5.setImageBitmap(bmp);
 
+        // alimentation de la liste pour chaque élément de responseJSON
         try {
             responseJSON = new JSONObject(responseString).getJSONArray("results");
             //System.out.println(responseJSON);
@@ -85,6 +83,8 @@ public class ResultsActivity extends AppCompatActivity {
 
     }
 }
+
+// Recupère l'image depuis l'URL , ouvre l'image, décode et met en bitmap
 
  class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;

@@ -38,15 +38,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView imageView;
 
 
-    //Declaration des constantes code de retour des requetes intent
+
     private static final int PHOTO_LIB_REQUEST = 1;
     private static final int CAMERA_PIC_REQUEST = 2;
-    //private String SERVER_URL = "http:/192.168.0.0/uusapp/addimage/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // on active la fonction Onclick
 
         captureButton = (Button) findViewById(R.id.captureButton);
         captureButton.setOnClickListener(this);
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    // en fonction de l'id on démarre une activité spécifique
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Intent => nouvelle instance
     protected void startPhotoLibraryActivity() {
         Intent photoLibIntent = new Intent();
         photoLibIntent.setType("image/*");
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(photoLibIntent, PHOTO_LIB_REQUEST);
     }
 
+    // photo : deja en bitmap => get data , librarie, conversion a faire et get URI
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == PHOTO_LIB_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = intent.getData();
@@ -101,8 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //private static final String IMGUR_CLIENT_ID = "...";
-    //private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpg");
+    //Remplace le Bitmap en fichier pour l'envoyer
 
     private File bitmapToFile(Bitmap bitmap, String name) {
         File imageFile = new File(getApplicationContext().getFilesDir().getPath() + "/" + name + ".jpg");
@@ -110,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         OutputStream os;
         try {
             os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-            os.flush();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 10, os);
+            os.flush();//clean
             os.close();
         } catch (Exception e) {
             Log.e(MainActivity.class.getSimpleName(), "Error writing bitmap", e);
@@ -125,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
             File file = bitmapToFile(bitmap, "random");
-            param.put("file", file, "image/jpg");
+            param.put("file", file, "image/jpg");// instanciation des clés + content type
         } catch (NullPointerException e) {
             Toast.makeText(MainActivity.this, "Sélectionnez une image ...", Toast.LENGTH_SHORT).show();
             return;
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Toast.makeText(MainActivity.this, "l'API n'est pas accessible ...", Toast.LENGTH_LONG).show();
             }
-
+                // récupère la location de la réponse JSON avec search id
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("API_response", "POST response:" + response);
@@ -154,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                             Toast.makeText(MainActivity.this, "l'API n'est pas accessible ...", Toast.LENGTH_LONG).show();
                         }
-
+                            //Instanciation de la nouvelle activité
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             Log.d("API_response", "GET response" + response.toString());
@@ -164,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
                             byte[] byteArray = bStream.toByteArray();
                             System.out.println(byteArray);
-                            intent.putExtra("image",byteArray);
+                            intent.putExtra("image",byteArray);// image de l'user , tableau de bit
                             startActivity(intent);
-                            intent.putExtra("response", response.toString());
+                            intent.putExtra("response", response.toString());//Transforme le JSON en string
                             startActivity(intent);
                         }
                     });
@@ -178,70 +181,3 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 }
-
-
-    /*
-    private final OkHttpClient client = new OkHttpClient();
-
-
-
-    public void run()  throws Exception {
-// Use the imgur image upload API as documented at https://api.imgur.com/endpoints/image
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addPart(
-                        Headers.of("Content-Disposition", "form-data; name=\"title\""),
-                        RequestBody.create(null, "Square Logo"))
-                .addPart(
-                        Headers.of("Content-Disposition", "form-data; name=\"image\""),
-                        RequestBody.create(MEDIA_TYPE_PNG, new File("/Carte SD/DCIM/CAMERA/test.jpg")))
-                .build();
-
-        Request request = new Request.Builder()
-                .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-                .url("http://192.168.43.46:8001/img_searches/")
-                .post(requestBody)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-        System.out.println(response.body().string());
-    }
-}
-
-    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            return uploadFile;
-        }
-
-        private String uploadFile(){
-            String responseString = null;
-            Log.d("Log", "File path" + opFilePath);
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
-            try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
-                            @Override
-                            public void transferred(long num) {
-                                publishProgress((int) ((num / (float) totalSize) * 100));
-                        }
-
-        }
-    }
-}
-
-    private class AndroidMultiPartEntity {
-    }
-
-
-*/
